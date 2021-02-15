@@ -50,6 +50,8 @@ const usuarioPut = async(req, res = response) => {
 
 const usuarioDelete = async(req, res) => {
     const { id } = req.params;
+    //extraer de la request el uid que se envia desde validar-jwt.js
+    // const usuarioAutenticado = req.usuario;
     //Borrar fisicamente
     // const usuario = await Usuario.findByIdAndDelete(id);
     const usuario = await Usuario.findByIdAndUpdate(id, { estado: false });

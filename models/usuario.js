@@ -1,6 +1,7 @@
 const { Schema, model } = require('mongoose');
 
 const UsuarioSchema = Schema({
+
     nombre: {
         type: String,
         required: [true, 'El nombre es obligatorio.']
@@ -33,7 +34,8 @@ const UsuarioSchema = Schema({
 
 UsuarioSchema.methods.toJSON = function() {
     //sacamos __v y pasword del objeto que devuelve al llamar al toJSON Y DEVUELVE LOS DEMAS EN ...usuario
-    const { __v, password, ...usuario } = this.toObject();
+    const { __v, password, _id, ...usuario } = this.toObject();
+    usuario.uid = _id;
     return usuario;
 }
 

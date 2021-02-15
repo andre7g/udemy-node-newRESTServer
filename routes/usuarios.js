@@ -1,7 +1,18 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
+//SE PUEDE IMPORTAR DE ESTA MANERA 
+// const { validarCampos } = require('../middlewares/validar-campos');
+// const { validarJWT } = require('../middlewares/validar-jwt');
+// const { esAdminRole, tieneRol } = require('../middlewares/validar-roles');
+// SE PUEDE IMPORTAR DE ESTA OTRA MANERA CON EL INDEX.JS
+const {
+    validarCampos,
+    validarJWT,
+    esAdminRole,
+    tieneRol
+} = require('../middlewares');
 
-const { validarCampos } = require('../middlewares/validar-campos');
+
 const { esRoleValido, emailExiste, existeUsuarioPorId } = require('../helpers/db-validators');
 
 const { usuariosGet, usuarioPost, usuarioPut, usuarioDelete, usuarioPatch } = require('../controller/usuarios');
@@ -27,6 +38,10 @@ router.put('/:id', [
 ], usuarioPut);
 
 router.delete('/:id', [
+    validarJWT,
+    //middleweare solo si es admin
+    //esAdminRole,
+    tieneRol('ADMIN_ROLE', 'VENTAS_ROLE'),
     check('id', 'No es un ID válido').isMongoId(),
     check('id').custom(existeUsuarioPorId),
     validarCampos
